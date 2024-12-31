@@ -1,4 +1,5 @@
 const con = require('../config/db');
+const fs = require('fs');
 
 const getAllUser = async(req, res) => {
     con.query('select * from users', (err, data) => {
@@ -68,10 +69,28 @@ const getEditUser = (req, res) => {
 }
 
 const postEditUser = (req, res) => {
-    console.log(req.body);
     let body = req.body;
-    let sql = "UPDATE `users` SET `fullname`= ?,`email`=?,`age`=? WHERE id = ?";
-    let myarr = [body.name, body.email, body.age, body.id];
+
+    let file;
+    if(!req.files){
+        file = body.old_img;
+    }else{
+        let sampleFile = req.files.avarta;
+        let sampleFileName = Date.now() + sampleFile.name;
+        let uploadPath = './public/upload/' + sampleFileName;
+    
+        sampleFile.mv(uploadPath, (err) =>{
+            if(err){
+                console.log(err);
+            }
+            
+            fs.unlinkSync('./public/upload/' + body.old_img);
+        });    
+        file = sampleFileName;
+    }
+
+    let sql = "UPDATE `users` SET `fullname`= ?,`email`=?,`age`=?,`avarta`=?  WHERE id = ?";
+    let myarr = [body.name, body.email, body.age, file, body.id];
     con.query(sql, myarr, (err, data) => {
         if(err){
             console.log(err);
