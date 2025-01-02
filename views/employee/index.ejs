@@ -8,11 +8,11 @@
     <!-- Header -->
     <%- include('./partials/navbar.ejs') %>
 
-    <%= JSON.stringify(users)%>
+    <%= JSON.stringify(employee)%>
 
     <!-- User List Section -->
     <section class="user-list">
-        <% users.forEach((val) => { %>
+        <% employee.forEach((val) => { %>
         <div class="user-card">
             <img src="/upload/<%= val.avarta %>" alt="User 1" class="user-image">
             <h2 class="user-name"><%= val.name %></h2>

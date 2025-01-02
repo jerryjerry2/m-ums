@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <%- include('./partials/head.ejs') %>
+    <%- include('../partials/head.ejs') %>
     
 <body>
 
+    
      <!-- Header -->
-     <%- include('./partials/navbar.ejs') %>
+     <%- include('../partials/navbar.ejs') %>
 
     <div class="form-container">
-        <h2>Create Your Information</h2>
+        <h2>Sign Up</h2>
         <form action="/create" method="post" id="userForm" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">Name:</label>
@@ -35,7 +36,7 @@
         </form>
     </div>
 
-    <%- include('./partials/footer.ejs') %>
+    <%- include('../partials/footer.ejs') %>
 
 </body>
 </html>

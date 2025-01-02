@@ -1,14 +1,15 @@
 const con = require('../config/db');
+const vEmployee = require('../validation/employee');
 const fs = require('fs');
 
-const getAllUser = async(req, res) => {
-    con.query('select * from users', (err, data) => {
+const getAllEmployee = async(req, res) => {
+    con.query('select * from employee', (err, data) => {
         if(err){
             console.log(err);
         }
         
         console.log(data);
-        res.render('index', {users : data});
+        res.render('index', {employee : data});
     });
 }
 
@@ -16,12 +17,19 @@ const getAbout = (req, res) => {
     res.render('about');
 }
 
-const getCreateUser = (req, res) => {
+const getCreateEmployee = (req, res) => {
     res.render('create');
 }
 
-const postCreateUser = (req, res) => {
-    console.log(req.files);
+const postCreateEmployee = (req, res) => {
+
+    const { error, value } = vEmployee(req.body);
+
+    if(error) {
+        res.send(error.details);
+        return;
+    }
+
     let sampleFile = req.files.avarta;
     let sampleFileName = Date.now() + sampleFile.name;
     let uploadPath = './public/upload/' + sampleFileName;
@@ -30,10 +38,11 @@ const postCreateUser = (req, res) => {
         if(err){
             console.log(err);
         }
+
         console.log('Success');
     });
 
-    let sql = "INSERT INTO `users`(`fullname`, `email`, `age`,  `avarta`) VALUES (?, ?, ?, ? )";
+    let sql = "INSERT INTO `employee`(`fullname`, `email`, `age`,  `avarta`) VALUES (?, ?, ?, ? )";
     let arrData = [req.body.name, req.body.email, req.body.age, sampleFileName];
     con.query(sql, arrData, (err, data) => {
         if(err){
@@ -44,10 +53,10 @@ const postCreateUser = (req, res) => {
     });
 }
 
-const deleteUser = (req, res) => {
+const deleteEmployee = (req, res) => {
     console.log('route delete');
     console.log(req.params);
-    con.query('DELETE FROM `users` WHERE id = ?', req.params.id, (err, data) => {
+    con.query('DELETE FROM `employee` WHERE id = ?', req.params.id, (err, data) => {
         if(err){
             console.log(err);
         }
@@ -56,9 +65,9 @@ const deleteUser = (req, res) => {
     })
 }
 
-const getEditUser = (req, res) => {
+const getEditEmployee = (req, res) => {
     console.log(req.params);
-    con.query('select * from users where id = ?', req.params.id, (err, data) => {
+    con.query('select * from employee where id = ?', req.params.id, (err, data) => {
         if(err){
             console.log(err);
         }
@@ -68,7 +77,7 @@ const getEditUser = (req, res) => {
     });
 }
 
-const postEditUser = (req, res) => {
+const postEditEmployee = (req, res) => {
     let body = req.body;
 
     let file;
@@ -89,7 +98,7 @@ const postEditUser = (req, res) => {
         file = sampleFileName;
     }
 
-    let sql = "UPDATE `users` SET `fullname`= ?,`email`=?,`age`=?,`avarta`=?  WHERE id = ?";
+    let sql = "UPDATE `employee` SET `fullname`= ?,`email`=?,`age`=?,`avarta`=?  WHERE id = ?";
     let myarr = [body.name, body.email, body.age, file, body.id];
     con.query(sql, myarr, (err, data) => {
         if(err){
@@ -102,11 +111,11 @@ const postEditUser = (req, res) => {
 
 
 module.exports = {
-    getAllUser,
+    getAllEmployee,
     getAbout,
-    getCreateUser,
-    postCreateUser,
-    deleteUser,
-    getEditUser,
-    postEditUser
+    getCreateEmployee,
+    postCreateEmployee,
+    deleteEmployee,
+    getEditEmployee,
+    postEditEmployee
 }
