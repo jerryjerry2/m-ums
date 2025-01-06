@@ -1,14 +1,15 @@
 const express = require('express');
 const EmployeeController = require('../controllers/employee');
+const {requireAuth} = require('../middlewares/auth');
 
 const router = express.Router();
 
 //Get
-router.get('/', EmployeeController.getAllEmployee);
+router.get('/', requireAuth, EmployeeController.getAllEmployee);
 router.get('/about', EmployeeController.getAbout);
 
 //Create
-router.get('/create', EmployeeController.getCreateEmployee);
+router.get('/create', requireAuth, EmployeeController.getCreateEmployee);
 router.post('/create', EmployeeController.postCreateEmployee);
 
 //Edit

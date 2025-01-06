@@ -3,13 +3,14 @@ const vEmployee = require('../validation/employee');
 const fs = require('fs');
 
 const getAllEmployee = async(req, res) => {
+
     con.query('select * from employee', (err, data) => {
         if(err){
             console.log(err);
         }
         
         console.log(data);
-        res.render('index', {employee : data});
+        res.render('employee/index', {employee : data});
     });
 }
 
@@ -18,7 +19,7 @@ const getAbout = (req, res) => {
 }
 
 const getCreateEmployee = (req, res) => {
-    res.render('create');
+    res.render('employee/create');
 }
 
 const postCreateEmployee = (req, res) => {
