@@ -1,6 +1,7 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
+const { checkUser } = require('./middlewares/auth');
 const authRoute = require('./routes/auth');
 const employeeRoute = require('./routes/employee');
 
@@ -14,6 +15,7 @@ app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 
+app.get('*', checkUser);
 app.use(authRoute);
 app.use(employeeRoute);
 
