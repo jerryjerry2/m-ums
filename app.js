@@ -2,7 +2,10 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const { checkUser } = require('./middlewares/auth');
-const authRoute = require('./routes/auth');
+//Api
+const apiAuth = require('./routes/api/auth');
+//Web
+const webAuth = require('./routes/web/auth');
 const employeeRoute = require('./routes/employee');
 
 const app = express();
@@ -16,7 +19,13 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 
 app.get('*', checkUser);
-app.use(authRoute);
+
+//Api
+app.use(apiAuth);
+
+//Web
+app.use(webAuth);
+
 app.use(employeeRoute);
 
 app.listen(3000);
