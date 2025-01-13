@@ -54,7 +54,7 @@ const signinPost = (req, res) => {
 
 const logout = (req, res) => {
     res.cookie('jwtToken', '', {maxAge : 1});
-    res.redirect('/signin');
+    res.json({msg : 'Logout Successfully'});
 };
 
 module.exports = {
